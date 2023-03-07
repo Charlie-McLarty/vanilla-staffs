@@ -1,4 +1,6 @@
 {
   "item.vanillastaffs.staff": "Staff",
-  "enchantment.vanillastaffs.casting": "Casting"
+  "enchantment.vanillastaffs.casting": "Casting",
+  "item.vanillastaffs.frost_staff": "Frost Staff",
+  "item.vanillastaffs.frost_scroll": "Frost Scroll"
 }

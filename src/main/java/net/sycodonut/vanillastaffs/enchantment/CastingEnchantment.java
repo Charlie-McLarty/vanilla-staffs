@@ -11,12 +11,12 @@ public class CastingEnchantment extends Enchantment {
     }
 
     @Override
-    public int getMaxLevel() {
-        return 1;
+    public int getMinPower(int level) {
+        return 12;
     }
 
     @Override
-    public int getMinPower(int level) {
-        return 30;
+    public int getMaxPower(int level) {
+        return this.getMinPower(level) + 50;
     }
 }
