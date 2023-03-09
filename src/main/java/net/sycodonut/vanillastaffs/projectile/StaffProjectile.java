@@ -24,16 +24,19 @@ import net.sycodonut.vanillastaffs.VanillaStaffs;
 import net.sycodonut.vanillastaffs.custom.StaffItem;
 
 public class StaffProjectile extends ThrownItemEntity {
+    private String staffType;
+
     public StaffProjectile(EntityType<? extends ThrownItemEntity> entityType, World world) {
         super(entityType, world);
     }
 
-    public StaffProjectile(World world, LivingEntity owner) {
-        super(VanillaStaffs.STAFF_PROJECTILE_ENTITY_TYPE, owner, world); // null will be changed later
+    public StaffProjectile(World world, LivingEntity owner, String staffType) {
+        super(VanillaStaffsProjectiles.StaffProjectileEntityType, owner, world);
+        this.staffType = staffType;
     }
 
     public StaffProjectile(World world, double x, double y, double z) {
-        super(VanillaStaffs.STAFF_PROJECTILE_ENTITY_TYPE, x, y, z, world); // null will be changed later
+        super(VanillaStaffsProjectiles.StaffProjectileEntityType, x, y, z, world);
     }
 
     @Override
@@ -43,13 +46,13 @@ public class StaffProjectile extends ThrownItemEntity {
     }
 
     @Environment(EnvType.CLIENT)
-    private ParticleEffect getParticleParameters() { // Not entirely sure, but probably has do to with the snowball's particles. (OPTIONAL)
+    private ParticleEffect getParticleParameters() {
         ItemStack itemStack = this.getItem();
         return itemStack.isEmpty() ? ParticleTypes.ITEM_SNOWBALL : new ItemStackParticleEffect(ParticleTypes.ITEM, itemStack);
     }
 
     @Environment(EnvType.CLIENT)
-    public void handleStatus(byte status) { // Also not entirely sure, but probably also has to do with the particles. This method (as well as the previous one) are optional, so if you don't understand, don't include this one.
+    public void handleStatus(byte status) {
         if (status == 3) {
             ParticleEffect particleEffect = this.getParticleParameters();
 
@@ -60,24 +63,20 @@ public class StaffProjectile extends ThrownItemEntity {
 
     }
 
-    protected void onEntityHit(EntityHitResult entityHitResult) { // called on entity hit.
+    protected void onEntityHit(EntityHitResult entityHitResult) {
         super.onEntityHit(entityHitResult);
-        Entity entity = entityHitResult.getEntity(); // sets a new Entity instance as the EntityHitResult (victim)
-        int i = entity instanceof BlazeEntity ? 3 : 0; // sets i to 3 if the Entity instance is an instance of BlazeEntity
-        entity.damage(DamageSource.thrownProjectile(this, this.getOwner()), (float)i); // deals damage
-
-        if (entity instanceof LivingEntity livingEntity) { // checks if entity is an instance of LivingEntity (meaning it is not a boat or minecart)
-            livingEntity.addStatusEffect((new StatusEffectInstance(StatusEffects.BLINDNESS, 20 * 3, 0))); // applies a status effect
-            livingEntity.addStatusEffect((new StatusEffectInstance(StatusEffects.SLOWNESS, 20 * 3, 2))); // applies a status effect
-            livingEntity.addStatusEffect((new StatusEffectInstance(StatusEffects.POISON, 20 * 3, 1))); // applies a status effect
-            livingEntity.playSound(SoundEvents.BLOCK_AMETHYST_BLOCK_CHIME, 2F, 1F); // plays a sound for the entity hit only
+        Entity entity = entityHitResult.getEntity();
+        //Frost Staff
+        if (entity instanceof LivingEntity livingEntity && staffType.equals("frostStaff")) {
+            livingEntity.addStatusEffect((new StatusEffectInstance(StatusEffects.SLOWNESS, 20 * 3, 1))); // Applies Slowness
+            livingEntity.playSound(SoundEvents.BLOCK_AMETHYST_BLOCK_CHIME, 2F, 1F);
         }
     }
 
     protected void onCollision(HitResult hitResult) { // called on collision with a block
         super.onCollision(hitResult);
         if (!this.world.isClient) { // checks if the world is client
-            this.world.sendEntityStatus(this, (byte)3); // particle?
+            this.world.sendEntityStatus(this, (byte)3);
             this.kill(); // kills the projectile
         }
 

@@ -28,12 +28,12 @@ public class StaffItem extends Item {
             if (this instanceof FrostStaffItem){
                 world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.BLOCK_AMETHYST_BLOCK_CHIME, SoundCategory.NEUTRAL, 0.5F, 1F); // plays a globalSoundEvent
                 user.getItemCooldownManager().set(this, 5);
-                StaffProjectile staffProjectileEntity = new StaffProjectile(world, user);
+                StaffProjectile staffProjectileEntity = new StaffProjectile(world, user, "frostStaff");
                     staffProjectileEntity.setItem(itemStack);
                     staffProjectileEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 1.5F, 0F);
                     world.spawnEntity(staffProjectileEntity);
                     user.incrementStat(Stats.USED.getOrCreateStat(this));
-
+                user.getItemCooldownManager().set(this, 100);
                 return TypedActionResult.success(itemStack, world.isClient());
             }
             PotionEntity potionEntity = new PotionEntity(world, user);
