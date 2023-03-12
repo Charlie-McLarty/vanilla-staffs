@@ -17,7 +17,7 @@ public class VanillaStaffsProjectiles {
                 Registries.ENTITY_TYPE,
                 new Identifier(VanillaStaffs.MOD_ID, name),
                 FabricEntityTypeBuilder.<StaffProjectile>create(SpawnGroup.MISC, StaffProjectile::new)
-                        .dimensions(EntityDimensions.fixed(0.25F, 0.25F))
+                        .dimensions(EntityDimensions.fixed(.25F, .25F)) //.25F
                         .trackRangeBlocks(4).trackedUpdateRate(10)
                         .build()
         );

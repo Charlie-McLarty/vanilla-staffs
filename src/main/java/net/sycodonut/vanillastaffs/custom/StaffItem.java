@@ -30,7 +30,7 @@ public class StaffItem extends Item {
                 user.getItemCooldownManager().set(this, 5);
                 StaffProjectile staffProjectileEntity = new StaffProjectile(world, user, "frostStaff");
                     staffProjectileEntity.setItem(itemStack);
-                    staffProjectileEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 1.5F, 0F);
+                    staffProjectileEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 2F, 0F);
                     world.spawnEntity(staffProjectileEntity);
                     user.incrementStat(Stats.USED.getOrCreateStat(this));
                 user.getItemCooldownManager().set(this, 100);
